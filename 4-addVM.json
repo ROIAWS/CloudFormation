@@ -1,0 +1,100 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters" : {
+        "ANumberParameter" : {
+            "Type" : "String",
+            "Default" : "a123456",
+            "Description" : "Enter your ANumber:"
+        },
+        "BucketNameParameter" : {
+          "Type" : "String",
+          "Default" : "a123456-bucket",
+          "Description" : "Enter Desired Bucket Name:"
+        },
+        "TableNameParameter" : {
+            "Type" : "String",
+            "Default" : "a123456-table",
+            "Description" : "Enter Desired DynamoDB Table Name:"
+        },
+        "KeyNameParameter" : {
+            "Type" : "String",
+            "Default" : "a123456-key",
+            "Description" : "Enter your SSH Key Name:"
+        }
+    },
+    "Resources": {
+        "MyBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {"Ref" : "BucketNameParameter"}
+            }
+        },
+        "CustomerTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": {"Ref" : "TableNameParameter"},
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "customerId",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "lastname",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "customerId",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }, 
+                "GlobalSecondaryIndexes" :[
+                    {
+                    "IndexName" : "lastname",
+                    "KeySchema" : [
+                        {
+                            "AttributeName" : "lastname",
+                            "KeyType" : "HASH"
+                        }
+                    ], 
+                    "Projection": {
+                        "ProjectionType": "KEYS_ONLY"
+                        },
+                    "ProvisionedThroughput" : {
+                        "ReadCapacityUnits" : "5",
+                        "WriteCapacityUnits" : "5"
+                        }
+                    }
+                ]
+            }
+        },
+        "MyEC2Instance" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+                "ImageId" : "ami-0dc2d3e4c0f9ebd18",
+                "KeyName" :  {"Ref" : "KeyNameParameter"},
+                "InstanceType" : "t2.micro",
+                "BlockDeviceMappings" : [
+                    {
+                      "DeviceName" : "/dev/sdm",
+                      "Ebs" : {
+                           "VolumeType" : "io1",
+                           "Iops" : "200",
+                           "DeleteOnTermination" : "false",
+                           "VolumeSize" : "20"
+                         }
+                       }, 
+                       {
+                         "DeviceName" : "/dev/sdk",
+                         "NoDevice" : {}
+                       }
+                   ]
+                }
+            }
+        }
+    }
