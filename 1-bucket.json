@@ -5,12 +5,7 @@
             "Type": "AWS::S3::Bucket",
             "Properties": {
                 "BucketName": "replacewithyourbucketname"
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "15378de8-cc5f-4aa9-b39b-7f287123c7e5"
-                }
             }
-        }
+         }
     }
 }
