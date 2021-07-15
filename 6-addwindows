@@ -1,0 +1,91 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters" : {
+        "ANumberParameter" : {
+            "Type" : "String",
+            "Default" : "a123456",
+            "Description" : "Enter your ANumber:"
+        },
+        "BucketNameParameter" : {
+          "Type" : "String",
+          "Default" : "a123456-bucket",
+          "Description" : "Enter Desired Bucket Name:"
+        },
+        "TableNameParameter" : {
+            "Type" : "String",
+            "Default" : "a123456-table",
+            "Description" : "Enter Desired DynamoDB Table Name:"
+        },
+        "KeyNameParameter" : {
+            "Type" : "AWS::EC2::KeyPair::KeyName",
+            "Default" : "a123456",
+            "Description" : "Select your SSH Key:"
+        },
+        "UserNameParameter" : {
+            "Type" : "String",
+            "Default" : "a123456-user2",
+            "Description" : "Enter the IAM Username to create:"
+        }
+    },
+    "Resources": {
+        "MyBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {"Ref" : "BucketNameParameter"}
+            }
+        },
+        "MyEC2Instance" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+                "ImageId" : "ami-0dc2d3e4c0f9ebd18",
+                "KeyName" :  {"Ref" : "KeyNameParameter"},
+                "InstanceType" : "t2.micro",
+                "BlockDeviceMappings" : [
+                    {
+                      "DeviceName" : "/dev/sdm",
+                      "Ebs" : {
+                           "VolumeType" : "io1",
+                           "Iops" : "200",
+                           "DeleteOnTermination" : "false",
+                           "VolumeSize" : "20"
+                         }
+                       }, 
+                       {
+                         "DeviceName" : "/dev/sdk",
+                         "NoDevice" : {}
+                       }
+                    ]
+                }
+            },
+        "MyEC2WindowsInstance" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+                "ImageId" : "ami-06298518240efec41",
+                "KeyName" :  {"Ref" : "KeyNameParameter"},
+                "InstanceType" : "t2.small",
+                "BlockDeviceMappings" : [
+                    {
+                        "DeviceName" : "/dev/sdm",
+                        "Ebs" : {
+                            "VolumeType" : "io1",
+                            "Iops" : "200",
+                            "DeleteOnTermination" : "true",
+                            "VolumeSize" : "30"
+                            }
+                        }, 
+                        {
+                            "DeviceName" : "/dev/sdk",
+                            "NoDevice" : {}
+                        }
+                    ]
+                }
+            },
+        "MyNewUser" : {
+            "Type" : "AWS::IAM::User",
+            "Properties" : {
+                "UserName" : { "Fn::Join" : [ "-", [ {"Ref" : "ANumberParameter"},"userid"]]
+                }
+            }
+        }
+    }
+}
