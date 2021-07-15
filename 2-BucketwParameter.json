@@ -1,0 +1,18 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters" : {
+        "BucketNameParameter" : {
+          "Type" : "String",
+          "Default" : "a123456-bucket",
+          "Description" : "Enter Desired Bucket Name:"
+        }
+    },
+    "Resources": {
+        "MyBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {"Ref" : "BucketNameParameter"}
+            }
+        }
+    }
+}
