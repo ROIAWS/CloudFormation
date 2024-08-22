@@ -37,38 +37,36 @@
         "MyEC2Instance" : {
             "Type" : "AWS::EC2::Instance",
             "Properties" : {
-                "ImageId" : "ami-0dc2d3e4c0f9ebd18",
+                "ImageId" : "ami-066784287e358dad1",
                 "KeyName" :  {"Ref" : "KeyNameParameter"},
                 "InstanceType" : "t2.micro",
                 "BlockDeviceMappings" : [
                     {
                       "DeviceName" : "/dev/sdm",
                       "Ebs" : {
-                           "VolumeType" : "io1",
-                           "Iops" : "200",
-                           "DeleteOnTermination" : "false",
-                           "VolumeSize" : "20"
+                           "VolumeType" : "gp3",
+                           "DeleteOnTermination" : "true",
+                           "VolumeSize" : "25"
                          }
                        }, 
                        {
                          "DeviceName" : "/dev/sdk",
                          "NoDevice" : {}
                        }
-                    ]
+                   ]
                 }
             },
         "MyEC2WindowsInstance" : {
             "Type" : "AWS::EC2::Instance",
             "Properties" : {
-                "ImageId" : "ami-06298518240efec41",
+                "ImageId" : "ami-07cc1bbe145f35b58",
                 "KeyName" :  {"Ref" : "KeyNameParameter"},
                 "InstanceType" : "t2.small",
                 "BlockDeviceMappings" : [
                     {
                         "DeviceName" : "/dev/sdm",
                         "Ebs" : {
-                            "VolumeType" : "io1",
-                            "Iops" : "200",
+                            "VolumeType" : "gp3",
                             "DeleteOnTermination" : "true",
                             "VolumeSize" : "30"
                             }
