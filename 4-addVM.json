@@ -76,7 +76,7 @@
         "MyEC2Instance" : {
             "Type" : "AWS::EC2::Instance",
             "Properties" : {
-                "ImageId" : "ami-066784287e358dad1",
+                "ImageId" : "ami-0a232144cf20a27a5",
                 "KeyName" :  {"Ref" : "KeyNameParameter"},
                 "InstanceType" : "t2.micro",
                 "BlockDeviceMappings" : [
